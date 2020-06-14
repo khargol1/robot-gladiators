@@ -1,5 +1,5 @@
 var playerName = "Dig"//window.prompt("What is your robot's name?");
-var playerHealth = 100;
+var playerHealth = 120;
 var playerAttack = 10;
 var playerMoney= 10;
 
@@ -11,8 +11,6 @@ var enemyHealth = 50;
 var enemyAttack = 12;
 
 var enemyNames = ["Roborto", "Amy Android", "Robo Trouble"];
-console.log(enemyNames);
-
 var promptFight;
 
 var fight = function(enemyName) {
@@ -30,7 +28,7 @@ var fight = function(enemyName) {
         window.alert(playerName + ' has decided to skip this fight. Goodbye!');
         // subtract money from playerMoney for skipping
         playerMoney = playerMoney - 10;
-        console.log("playerMoney", playerMoney)
+        console.log("Penalty for skipping, ", playerMoney)
         break;
       }
     }
@@ -72,13 +70,43 @@ var fight = function(enemyName) {
   }
 };
 
+function reset(){
+  playerMoney = 10;
+  playerHealth = 100;
+  playerAttack = 10;
+  enemyHealth = 50;
+}
 
+function endGame(){
+  console.log("Game Over! Your score is " + playerMoney);
+  window.alert("Thanks for playing.");
+}
+
+//main logic for game
+function startGame(){
   for(var i = 0; i < enemyNames.length; i++){
-    if(playerHealth <= 0){break;}
-    enemyName = enemyNames[i];
-    fight(enemyNames[i]);
-    enemyHealth = 50;
-    
+    if(playerHealth > 0){
+      enemyName = enemyNames[i];
+      console.log("Round " + (i+1) + ". Fight!");
+      fight(enemyNames[i]); 
+      enemyHealth = 50; //set health for next round enemy
+    }else
+    {
+      endGame();
+      break;
+    }//you be dead, game over.
   }
+  //prompt to reset and restart
+  var replayPrompt = window.confirm("Would you like to play again?");
+  if(replayPrompt){
+    reset();
+    startGame();
+  }
+  else{
+    endGame();
+  }
+}
 
-//fight();
+//Code here calls the game to start
+
+startGame();
