@@ -1,5 +1,5 @@
 var playerName = "Dig"//window.prompt("What is your robot's name?");
-var playerHealth = 120;
+var playerHealth = 100;
 var playerAttack = 10;
 var playerMoney= 10;
 
@@ -13,10 +13,12 @@ var enemyAttack = 12;
 var enemyNames = ["Roborto", "Amy Android", "Robo Trouble"];
 var promptFight;
 
+
+//defines how a fight occurs
 var fight = function(enemyName) {
   while (playerHealth > 0 && enemyHealth > 0) {
     // ask user if they'd liked to fight or run
-    var promptFight = window.prompt('Would you like FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.');
+    promptFight = "fight";//window.prompt('Would you like FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.');
 
     // if user picks "skip" confirm and then stop the loop
     if (promptFight === "skip" || promptFight === "SKIP") {
@@ -70,6 +72,7 @@ var fight = function(enemyName) {
   }
 };
 
+//resets game to start conditions
 function reset(){
   playerMoney = 10;
   playerHealth = 100;
@@ -77,9 +80,52 @@ function reset(){
   enemyHealth = 50;
 }
 
+//game ending message
 function endGame(){
   console.log("Game Over! Your score is " + playerMoney);
   window.alert("Thanks for playing.");
+}
+
+//Shop function
+function shop(){
+  console.log("Entered the shop.");
+  console.log("1. Refill 25 health. $8");
+  console.log("2. Increase your attack by 6. $6");
+  console.log("3. Restore all Health. $15");
+  console.log("4. Leave.");
+  var shopChoice=5; 
+  //while(shopChoice != 3){
+    shopChoice=window.prompt("Please make your selection. (Type a number)");
+    switch(shopChoice){
+    case '1':
+      if(playerMoney >= 8){
+      playerHealth = playerHealth + 25;
+      playerMoney = playerMoney - 8; //nevermind we don't every check if they can afford it.
+      }
+      else{window.alert("You don't have enough money for health refill.");}
+      break;
+    case '2':
+      if(playerMoney >= 6 ){
+      playerAttack = playerAttack + 6;
+      playerMoney = playerMoney - 6;
+      }
+      else{window.alert("You don't have enough money for attack upgrade.")}
+      break;
+    case '3':
+      if (playerMoney >= 15){
+      playerHealth = 100;
+      playerMoney = playerMoney - 15;
+      }
+      else{window.alert("You don't have enought money for a full health refill.")}
+      break;
+    case '4':
+      break;
+    default:
+      console.log("Invalid entry, try again.");
+      shop();
+      break;
+    }
+  //} leave the while loop out for a bit
 }
 
 //main logic for game
@@ -88,7 +134,13 @@ function startGame(){
     if(playerHealth > 0){
       enemyName = enemyNames[i];
       console.log("Round " + (i+1) + ". Fight!");
-      fight(enemyNames[i]); 
+      fight(enemyNames[i]);
+      if(i < enemyNames.length - 1 && playerHealth > 0){
+        var storeConfirm=window.confirm("Do you wish to shop?")
+        if(storeConfirm){
+          shop();
+        }
+      }
       enemyHealth = 50; //set health for next round enemy
     }else
     {
