@@ -7,15 +7,22 @@ var playerMoney= 10;
 console.log(playerName, playerAttack, playerHealth);
 
 var enemyName;
-var enemyHealth = 50;
+var enemyHealth = randomNumber(40, 60);
 var enemyAttack = 12;
+
 
 var enemyNames = ["Roborto", "Amy Android", "Robo Trouble"];
 var promptFight;
 
+function randomNumber(min, max) {
+  var value = Math.floor(Math.random() * (max - min + 1)) + min;
+
+  return value;
+};
+
 
 //defines how a fight occurs
-var fight = function(enemyName) {
+function fight(enemyName) {
   while (playerHealth > 0 && enemyHealth > 0) {
     // ask user if they'd liked to fight or run
     promptFight = "fight";//window.prompt('Would you like FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.');
@@ -29,14 +36,15 @@ var fight = function(enemyName) {
       if (confirmSkip) {
         window.alert(playerName + ' has decided to skip this fight. Goodbye!');
         // subtract money from playerMoney for skipping
-        playerMoney = playerMoney - 10;
+        playerMoney = Math.max(0, playerMoney - 10);
         console.log("Penalty for skipping, ", playerMoney)
         break;
       }
     }
 
     // remove enemy's health by subtracting the amount set in the playerAttack variable
-    enemyHealth = enemyHealth - playerAttack;
+    var damage = randomNumber(playerAttack -3, playerAttack);
+    enemyHealth = Math.max( 0, enemyHealth - damage);
     console.log(
       playerName + ' attacked ' + enemyName + '. ' + enemyName + ' now has ' + enemyHealth + ' health remaining.'
     );
@@ -56,7 +64,8 @@ var fight = function(enemyName) {
     }
 
     // remove players's health by subtracting the amount set in the enemyAttack variable
-    playerHealth = playerHealth - enemyAttack;
+    damage = randomNumber(enemyAttack - 3, enemyAttack);
+    playerHealth = Math.max(0, playerHealth - damage);
     console.log(
       enemyName + ' attacked ' + playerName + '. ' + playerName + ' now has ' + playerHealth + ' health remaining.'
     );
@@ -130,6 +139,8 @@ function shop(){
 
 //main logic for game
 function startGame(){
+
+
   for(var i = 0; i < enemyNames.length; i++){
     if(playerHealth > 0){
       enemyName = enemyNames[i];
@@ -141,7 +152,7 @@ function startGame(){
           shop();
         }
       }
-      enemyHealth = 50; //set health for next round enemy
+      enemyHealth = randomNumber(40,60); //set health for next round enemy
     }else
     {
       endGame();
