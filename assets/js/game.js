@@ -1,5 +1,5 @@
 var playerInfo = {
-  name: window.prompt("What is your robot's name?"),
+  name: getPlayerName(),
   health: 100,
   attack: 10,
   money: 10,
@@ -35,9 +35,6 @@ var playerInfo = {
 
 };
 
-// You can also log multiple values at once like this
-console.log(playerInfo.name, playerInfo.attack, playerInfo.health);
-
 var enemyInfo = [
   {
     name: "Roborto",
@@ -56,21 +53,30 @@ var enemyInfo = [
   }
 ];
 
-var promptFight;
 
+function getPlayerName(){
+  var name = ""
+  while(name == "" || name == null){
+    name = window.prompt("What is your robot's name?");
+  }
+  console.log("Your robot's name is " + name);
+  return name;
+}
+
+
+//Random Number Generator
 function randomNumber(min, max) {
   var value = Math.floor(Math.random() * (max - min + 1)) + min;
 
   return value;
 };
 
-
 //defines how a fight occurs
 function fight(enemy) {
   console.log(enemy);
   while (playerInfo.health > 0 && enemy.health > 0) {
     // ask user if they'd liked to fight or run
-    promptFight = window.prompt('Would you like FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.');
+    var promptFight = window.prompt('Would you like FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.');
 
     // if user picks "skip" confirm and then stop the loop
     if (promptFight === "skip" || promptFight === "SKIP") {
@@ -204,4 +210,4 @@ function startGame(){
 
 //Code here calls the game to start
 
-startGame();
+startGame(); 
